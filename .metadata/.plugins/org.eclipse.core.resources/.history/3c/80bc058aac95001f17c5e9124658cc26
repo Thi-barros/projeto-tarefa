@@ -1,0 +1,54 @@
+package com.unip.desafio.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import com.unip.desafio.model.Tarefa;
+import com.unip.desafio.model.TarefaService;
+
+import jakarta.transaction.Transactional;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/tarefas")
+public class TarefaController {
+
+    @Autowired
+    private TarefaService tarefaService;
+
+    @GetMapping
+    public List<Tarefa> listarTarefas() {
+        return tarefaService.listarTarefas();
+    }
+
+    @PostMapping("/salvar")
+    @Transactional
+    public String criarTarefa(@RequestBody Tarefa tarefa) {
+         tarefaService.salvarTarefa(tarefa);
+         return "Tarefa salva com sucesso.";
+    }
+
+    @GetMapping("/{id}")
+    public Tarefa buscarTarefaPorId(@PathVariable Long id) {
+        return tarefaService.buscarTarefa(id);
+    }
+
+    @PutMapping("/{id}")
+    public Tarefa atualizarTarefa(@PathVariable Long id, @RequestBody Tarefa tarefaAtualizada) {
+        Tarefa tarefa = tarefaService.buscarTarefa(id);
+        if (tarefa != null) {
+            tarefa.setDescricao(tarefaAtualizada.getDescricao());
+            tarefa.setNome(tarefaAtualizada.getNome());
+            tarefa.setId(tarefaAtualizada.getId());
+            return tarefaService.salvarTarefa(tarefa);
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletarTarefa(@PathVariable Long id) {
+        tarefaService.deletarTarefa(id);
+    }
+}

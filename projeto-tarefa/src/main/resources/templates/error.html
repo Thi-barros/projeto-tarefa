@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Página de Erro</title>
+</head>
+<body>
+    <h1>Ocorreu um erro!</h1>
+    <p>Desculpe, algo deu errado. Por favor, tente novamente mais tarde.</p>
+    <p th:if="${statusCode != null}"><strong>Status Code:</strong> <span th:text="${statusCode}"></span></p>
+    <p th:if="${errorMessage != null}"><strong>Mensagem de Erro:</strong> <span th:text="${errorMessage}"></span></p>
+    <a href="/projetos/index">Voltar</a>
+</body>
+</html>

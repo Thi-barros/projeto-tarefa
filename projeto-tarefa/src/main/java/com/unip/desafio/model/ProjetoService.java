@@ -1,5 +1,6 @@
 package com.unip.desafio.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,24 +13,26 @@ import com.unip.desafio.model.DB.ProjetoRepository;
 public class ProjetoService {
 	@Autowired
 	private ProjetoRepository projetoRepository;
+	private Projeto projeto;
 
 	//Todos metodos vão retonar uma lista, para retornarem de forma ordenada o resultado.
 	
 	public List<Projeto> listarProjetos(){
 		//Para a ordenação da lista
-		Sort.by("nome").ascending();
-		return projetoRepository.findAll();
+		
+		return projetoRepository.findAll(Sort.by("nome").ascending());
 	}
-	public List<Projeto> salvarProjeto(Projeto projeto) {
+	public Projeto salvarProjeto(Projeto projeto) {
+		if(projeto.getId() == null) {
+		projeto.setDataCriacao(LocalDateTime.now());
 		projetoRepository.save(projeto);
-		return listarProjetos();
+		}
+		return projetoRepository.save(projeto);
 	}
-	public List<Projeto> buscarProjeto(Long id) {
-		projetoRepository.findById(id).orElse(null);
-		return listarProjetos();
-	}
-	public List<Projeto> deletarProjeto(Long id) {
+	public Projeto buscarProjeto(Long id) {
+		return projetoRepository.findById(id).orElse(null);
+		}
+	public void deletarProjeto(Long id) {
 		projetoRepository.deleteById(id);
-		return listarProjetos();
 	}
 }

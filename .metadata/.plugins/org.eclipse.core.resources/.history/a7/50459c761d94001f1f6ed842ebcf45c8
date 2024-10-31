@@ -1,0 +1,44 @@
+ <!DOCTYPE html>
+<html xmlns = "https://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org/">
+	<!--lang="pt-BR-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios</title>
+</head>
+<body>
+    <fieldset>
+        <form action="@{/projetos}" method = "post">
+            <label for="nm_projeto">Nome do projeto:</label>
+            <input type="text" name="nm_projeto" id="nm_projeto"></br></br>
+
+            <label for="nm_projeto">descrição do projeto:</label>
+            <input type="text" name="ds_descricao" id="ds_descricao">
+            
+            </br></br>
+            <input type="button" value="enviar">
+        </form>
+    </fieldset>
+
+    
+    <fieldset>
+        <form action="@{/tarefas}" method = "post">
+            <label for="nm_projeto">Nome da tarefa:</label>
+            <input type="text" name="nm_tarefa" id="nm_tarefa"></br></br>
+
+            <label for="nm_projeto">projeto a qual se refere:</label>
+			<input type="text" name="nm_projeto_ref" id="nm_projeto_ref">
+			</br></br>
+
+            <label for="nm_projeto">descrição da tarefa:</label>
+            <input type="text" name="ds_task" id="ds_task"></br></br>
+
+            <label for="nm_projeto"> criador da tarefa</label>
+            <input type="text" name="nm_criador" id="nm_criador"></br></br>
+        
+            </br>
+            <input type="button" value="enviar">
+        </form>
+    </fieldset>
+</body>
+</html>

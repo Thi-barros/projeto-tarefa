@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projetos e Tarefas</title>
+    <style>
+        .projeto {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .tarefa {
+            margin-left: 20px;
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Projetos e Tarefas</h1>
+    
+    <div th:each="projeto : ${projetos}">
+        <!-- Informações do projeto -->
+        <div class="projeto">
+            <strong th:text="${projeto.nome}">Nome do Projeto</strong> - 
+            <span th:text="${projeto.descricao}">Descrição</span>
+
+            <!-- Lista de tarefas do projeto -->
+            <div th:each="tarefa : ${projeto.tarefas}" class="tarefa">
+                <p th:text="${tarefa.descricao}">Descrição da Tarefa</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

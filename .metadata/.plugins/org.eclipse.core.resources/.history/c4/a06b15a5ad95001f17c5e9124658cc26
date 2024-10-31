@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+	<!--lang="pt-BR-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios</title>
+</head>
+<body>
+    <fieldset>
+        <form method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/salvar}" >
+            <label for="nm_projeto">Nome do projeto:</label>
+            <input type="text" name="nm_projeto" id="nm_projeto" th:field="*{nome}">
+			<span th:if="${fields.hasErrors('nome')}" th:errors="*{nome}"></br></br>
+
+            <label for="nm_projeto">descrição do projeto:</label>
+            <input type="text" name="ds_descricao" id="ds_descricao" th:field="*{descricao}">
+			<span th:if="${fields.hasErrors('descricao')}" th:errors="*{descricao}"></br></br>
+            
+            </br></br>
+            <input type="submit" value="Enviar">
+        </form>
+    </fieldset>
+	
+	<h2>Projetos</h2>
+	    <div th:each="proj : ${projetos}">
+	        <p th:text="${proj.nome}">Nome do Projeto</p>
+	    </div>
+
+    
+    <fieldset>
+        <form method = "POST" th:object="${tarefa}" th:action="@{/tarefas/salvar}">
+            <label for="nm_projeto">Nome da tarefa:</label>
+            <input type="text" name="nm_tarefa" id="nm_tarefa" th:field="*{nome}"></br></br>
+
+            <label for="nm_projeto">Projeto a qual se refere:</label>
+			<select name = "projeto" th:field ="*{projeto}" required>
+				<option value="" disabled selected>Selecione um projeto</option>
+				<option th:each="proj: ${projetos}"
+				th:value="${proj.id}" th:text="${proj.nome}"></option>
+			</select>
+			</br></br>
+
+            <label for="nm_projeto">descrição da tarefa:</label>
+            <input type="text" name="ds_task" id="ds_task" th:field="*{descricao}"></br></br>
+
+            </br>
+            <input type="submit" value="enviar">
+        </form>
+    </fieldset>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Projetos</title>
+</head>
+<body>
+    <h1>Lista de Projetos e Tarefas</h1>
+    <div th:each="proj : ${projetos}">
+        <h2 th:text="${proj.nome}">Nome do Projeto</h2>
+        <p th:text="${proj.descricao}">Descrição do Projeto</p>
+        <h3>Tarefas:</h3>
+        <ul>
+            <li th:each="tarefa : ${proj.tarefas}" th:text="${tarefa.nome}">Nome da Tarefa</li>
+        </ul>
+    </div>
+    <a href="/projetos/index">Voltar</a>
+</body>
+</html>
