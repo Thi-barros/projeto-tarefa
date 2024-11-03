@@ -8,14 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.unip.desafio.model.DB.ProjetoRepository;
-
+ 
 @Service
 public class ProjetoService {
 	@Autowired
 	private ProjetoRepository projetoRepository;
 	private Projeto projeto;
 
-	//Todos metodos vão retonar uma lista, para retornarem de forma ordenada o resultado.
 	
 	public List<Projeto> listarProjetos(){
 		//Para a ordenação da lista
@@ -25,7 +24,6 @@ public class ProjetoService {
 	public Projeto salvarProjeto(Projeto projeto) {
 		if(projeto.getId() == null) {
 		projeto.setDataCriacao(LocalDateTime.now());
-		projetoRepository.save(projeto);
 		}
 		return projetoRepository.save(projeto);
 	}

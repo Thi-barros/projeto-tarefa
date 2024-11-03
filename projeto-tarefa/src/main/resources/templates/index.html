@@ -7,6 +7,7 @@
     <title>Formularios</title>
 </head>
 <body>
+	<h2>Enviar projeto</h2>
     <fieldset>
         <form method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/salvar}" >
             <label for="nm_projeto">Nome do projeto:</label>
@@ -21,7 +22,8 @@
             <input type="submit" value="Enviar">
         </form>
     </fieldset>
-	
+	</br>
+	<h2>Enviar tarefa</h2>
     <fieldset>
         <form method = "POST" th:object="${tarefa}" th:action="@{/tarefas/salvar}">
             <label for="nm_tarefa">Nome da tarefa:</label>
@@ -42,8 +44,37 @@
             </br>
             <input type="submit" value="enviar">
         </form>
+	<fieldset>
+			</br></br>
+			<h2>Atualizar projeto</h2>
+		    <form method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/atualizar}" >
+				<label for="projeto">Projeto a qual se refere:</label>
+					<select name = "projetoId" required>
+					 		<option value="" disabled selected>Selecione um projeto</option>
+						<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+					</select>	
+				<label for="nome">Nome do Projeto:</label>
+				<input type="text" name="nome" id="nome" placeholder="Novo nome do projeto">
+				<label for="descricao">Descrição:</label>
+				<textarea name="descricao" id="descricao" placeholder="Nova descrição do projeto"></textarea>
+				
+				<button type="submit" class="btn">Atualizar Projeto</button>
+			</form>
+		</fieldset>
 		</br>
+		<h2>Deletar Projeto</h2>
+		    <form th:action="@{/projetos/deletar}" method="post">
+		        <div>
+					<select name = "projetoId" required>
+						<option value="" disabled selected>Selecione um projeto</option>
+						<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+					</select>	
+		        </div>
+		        <button type="submit">Deletar Projeto</button>
+		    </form>
+		</div>
+		</br></br>
 		<a href="/projetos/todos"><button>Listar Todos os Projetos</button></a>
-    </fieldset>
+    	</fieldset>
 </body>
 </html>

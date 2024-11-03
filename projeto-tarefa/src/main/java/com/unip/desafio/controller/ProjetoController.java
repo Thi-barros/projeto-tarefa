@@ -1,6 +1,7 @@
 package com.unip.desafio.controller;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,20 +60,20 @@ public class ProjetoController {
 	        model.addAttribute("listaTarefas", tarefaService.listarTarefas());
 	        return "index"; 
 		}
-		
 		projetoService.salvarProjeto(projeto);
+		projeto.setPrazo(projeto.getDataCriacao().plusDays(15));
 		return "redirect:/projetos/listar"; 
 	}
 	
-	@PutMapping("/atualizar/{id}")
-	public String atualizarProjeto(@PathVariable Long id, @RequestBody Projeto projetoAtualizado){
+	@PostMapping("/atualizar")
+	public String atualizarProjeto(@RequestParam("projetoId") Long id,
+			@RequestParam("nome") String nome, @RequestParam("descricao") String descricao){
 		Projeto projetoExistente = (Projeto) projetoService.buscarProjeto(id);
 		if(projetoExistente != null) {
-			projetoExistente.setNome(projetoAtualizado.getNome());
-			projetoExistente.setDescricao(projetoAtualizado.getDescricao());
-			projetoExistente.setStatus(projetoAtualizado.isStatus());
+			projetoExistente.setNome(nome);
+			projetoExistente.setDescricao(descricao);
 			projetoService.salvarProjeto(projetoExistente);
-		}
+		} 
 		return "redirect:/projetos/index";
 	} 
 	@PostMapping("/concluir/{id}")
@@ -80,6 +81,7 @@ public class ProjetoController {
 		Projeto projeto = projetoService.buscarProjeto(id);
 		if(projeto != null) {
 			projeto.setStatus(true);
+			projeto.setDataEntrega(LocalDateTime.now());
 			projetoService.salvarProjeto(projeto);
 			return"redirect:/projetos/index";
 		}
@@ -114,9 +116,9 @@ public class ProjetoController {
 		}
 	}
 	
-	@DeleteMapping("/{id}")
+	@PostMapping("/deletar")
 	@Transactional
-	public String deletarProjeto(@PathVariable Long id, Model model){
+	public String deletarProjeto(@RequestParam("projetoId") Long id, Model model){
 		try {
             projetoService.deletarProjeto(id);
             return "redirect:/projetos/listar";

@@ -26,7 +26,21 @@ private String nome;
 private String descricao;
 private boolean status;
 private LocalDateTime dataCriacao; 
+private LocalDateTime dataEntrega;
+private LocalDateTime prazo;
 
+public LocalDateTime getPrazo() {
+	return prazo;
+}
+public void setPrazo(LocalDateTime prazo) {
+	this.prazo = prazo;
+}
+public LocalDateTime getDataEntrega() {
+	return dataEntrega;
+}
+public void setDataEntrega(LocalDateTime dataEntrega) {
+	this.dataEntrega = dataEntrega;
+}
 @OneToMany(mappedBy= "projeto", cascade = CascadeType.ALL)
 private List<Tarefa> tarefas;
 
