@@ -20,7 +20,7 @@ public class Projeto {
 private Long id;
 //incluir data de criacao e talvez e a de termino, pense sobre a lógica. 
 @NotEmpty(message ="O nome do projeto é obrigatório")
-@Size(min = 2, max=100, message = "O nome do projeto deve conter entre 2 a 100 caracteres")
+@Size(min = 2, max=30, message = "O nome do projeto deve conter entre 2 a 100 caracteres")
 private String nome;
 @NotEmpty(message ="A descrição do projeto é obrigatório")
 private String descricao;

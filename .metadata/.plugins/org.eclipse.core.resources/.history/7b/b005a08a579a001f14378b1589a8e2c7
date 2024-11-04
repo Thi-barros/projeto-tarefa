@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+	<!--lang="pt-BR-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios</title>
+</head>
+<body>
+	<h2>Enviar projeto</h2>
+    <fieldset>
+        <form method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/salvar}" >
+            <label for="nm_projeto">Nome do projeto:</label>
+            <input type="text" name="nm_projeto" id="nm_projeto" th:field="*{nome}">
+			<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span></br></br>
+
+            <label for="nm_projeto">descrição do projeto:</label>
+            <input type="text" name="ds_descricao" id="ds_descricao" th:field="*{descricao}">
+			<span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></span></br></br>
+            
+            </br></br>
+            <input type="submit" value="Enviar">
+        </form>
+    </fieldset>
+	</br>
+	<h2>Enviar tarefa</h2>
+    <fieldset>
+        <form method = "POST" th:object="${tarefa}" th:action="@{/tarefas/salvar}">
+            <label for="nm_tarefa">Nome da tarefa:</label>
+            <input type="text" name="nm_tarefa" id="nm_tarefa" th:field="*{nome}">
+			<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span></br></br>
+
+            <label for="projeto">Projeto a qual se refere:</label>
+			<select name = "projetoId" required>
+				<option value="" disabled selected>Selecione um projeto</option>
+				<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+			</select>
+			</br></br>
+
+            <label for="nm_projeto">descrição da tarefa:</label>
+            <input type="text" name="ds_task" id="ds_task" th:field="*{descricao}">
+			<span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></span></br></br>
+
+            </br>
+            <input type="submit" value="enviar">
+        </form>
+	<fieldset>
+			</br></br>
+			<h2>Atualizar projeto</h2>
+		    <form method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/atualizar}" >
+				<label for="projeto">Projeto a qual se refere:</label>
+					<select name = "projetoId" required>
+					 		<option value="" disabled selected>Selecione um projeto</option>
+						<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+					</select>	
+				<label for="nome">Nome do Projeto:</label>
+				<input type="text" name="nome" id="nome" placeholder="Novo nome do projeto">
+				<label for="descricao">Descrição:</label>
+				<textarea name="descricao" id="descricao" placeholder="Nova descrição do projeto"></textarea>
+				
+				<button type="submit" class="btn">Atualizar Projeto</button>
+			</form>
+		</fieldset>
+		</br>
+		<h2>Deletar Projeto</h2>
+		    <form th:action="@{/projetos/deletar}" method="post">
+		        <div>
+					<select name = "projetoId" required>
+						<option value="" disabled selected>Selecione um projeto</option>
+						<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+					</select>	
+		        </div>
+		        <button type="submit">Deletar Projeto</button>
+		    </form>
+			<form class="hidden" method = "POST" action="#" th:object="${tarefa}" th:action="@{/tarefas/atualizar}" >
+				<label for="tarefaId">Projeto a qual se refere:</label>
+				<select name = "tarefaId" required>
+					<option value="" disabled selected>Selecione uma tarefa</option>
+					<option th:each="tar: ${tarefas}"th:value="${tar.id}" th:text="${tar.nome}"></option>
+				</select>	
+				<br>
+
+				<label for="nome">Nome da tarefa:</label>
+				<input type="text" name="nome" id="nome" placeholder="Novo nome da tarefa" required>
+				<br>
+				<label for="descricao">Descrição:</label><br>
+				<textarea name="descricao" id="descricao" placeholder="Nova descrição da tarefa"></textarea>
+				<br>									
+				<input type="submit" class="btn" value="Atualizar" />
+			</form>
+		</div>
+		</br></br>
+		<a href="/projetos/todos"><button>Listar Todos os Projetos</button></a>
+    	</fieldset>
+</body>
+</html>

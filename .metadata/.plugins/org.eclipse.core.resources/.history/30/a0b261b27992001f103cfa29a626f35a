@@ -1,5 +1,0 @@
-package com.unip.desafio.model.DB;
-
-public interface TarefaRepository {
-
-}

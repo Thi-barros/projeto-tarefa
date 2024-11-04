@@ -48,18 +48,19 @@ public class ProjetoController {
 		model.addAttribute("projeto", new Projeto());
 		model.addAttribute("projetos", projetoService.listarProjetos());
 		model.addAttribute("tarefa", new Tarefa());
+		model.addAttribute("tarefas", tarefaService.listarTarefas());		
 		return "index"; 
 	} 
 	
 	@PostMapping("/salvar")
 	@Transactional
-	String salvarProjeto(@ModelAttribute("projeto") @Valid Projeto projeto, BindingResult result, Model model) throws ParseException {
+	String salvarProjeto(@Valid @ModelAttribute("projeto") Projeto projeto, BindingResult result, Model model) throws ParseException {
 		if(result.hasErrors()) {
 			model.addAttribute("projetos", projetoService.listarProjetos());
 	        model.addAttribute("tarefa", new Tarefa());
 	        model.addAttribute("listaTarefas", tarefaService.listarTarefas());
 	        return "index"; 
-		}
+		} 
 		projetoService.salvarProjeto(projeto);
 		projeto.setPrazo(projeto.getDataCriacao().plusDays(15));
 		return "redirect:/projetos/listar"; 
@@ -101,6 +102,7 @@ public class ProjetoController {
 	@GetMapping("/todos")
 	public String listarTodosProjetos(Model model) {
 		model.addAttribute("projetos", projetoService.listarProjetos());
+		model.addAttribute("listaTarefas", tarefaService.listarTarefas());
 		return"listarProjetos";
 		}
 	
@@ -115,6 +117,12 @@ public class ProjetoController {
 			return"index";
 		}
 	}
+	/*@GetMapping("/detalhe/{id}")
+	public String exibirDetalheProjeto(@PathVariable Long id, Model model) {
+		Projeto projeto = projetoService.buscarProjeto(id); // Certifique-se de que esse método retorna um projeto válido
+		model.addAttribute("projeto", projeto);
+		return "projetoDetalhe"; // Nome da página HTML para o Thymeleaf renderizar
+		}*/
 	
 	@PostMapping("/deletar")
 	@Transactional

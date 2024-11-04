@@ -50,6 +50,17 @@
         .btn:hover {
             background-color: #0056b3;
         }
+		ul {
+		   list-style-type: none;
+		    padding: 0;
+		}
+
+		 li {
+		   background-color: #e9ecef;
+		   padding: 5px;
+		   margin-bottom: 5px;
+		   border-radius: 4px;
+		}
     </style>
 </head>
 <body>
@@ -58,9 +69,24 @@
         <p><strong>ID do Projeto:</strong> <span th:text="${projeto.id}">ID do Projeto</span></p>
         <p><strong>Nome:</strong> <span th:text="${projeto.nome}">Nome do Projeto</span></p>
         <p><strong>Descrição:</strong> <span th:text="${projeto.descricao}">Descrição do Projeto</span></p>
-        <p><strong>Status:</strong> <span th:text="${projeto.status ? 'Ativo' : 'Inativo'}">Status do Projeto</span></p>
+        <p><strong>Status:</strong> <span th:text="${projeto.status ? 'Entregue' : 'Não entregue'}">Status do Projeto</span></p>
         <p><strong>Data de Criação:</strong> <span th:text="${#temporals.format(projeto.dataCriacao, 'dd/MM/yyyy HH:mm')}">Data de Criação</span></p>
-        <a href="/projetos/index" class="btn">Voltar</a>
+		<p><strong>Prazo:</strong> <span th:text="${#temporals.format(projeto.prazo, 'dd/MM/yyyy HH:mm')}">Prazo</span></p>
+		<p><strong>Data de Entrega:</strong> <span th:text="${#temporals.format(projeto.dataEntrega, 'dd/MM/yyyy HH:mm')}">Data de entrega</span></p>
+		<h3>Tarefas:</h3>
+		<ul>
+			<li th:each="tarefa : ${projeto.tarefas}">
+				<p><strong>ID:</strong> <span th:text="${tarefa.id}">ID</span> </p>
+				<p><strong>Nome</strong> <span th:text="${tarefa.nome}">Nome</span></p>	
+				<p><strong>Descrição:</strong> <span th:text="${tarefa.descricao}">Descrição</span></p>
+			</li>
+	   </ul>
+		
+		<form method="post" th:action="@{/projetos/concluir/{id}(id=${projeto.id})}">
+			<button type="submit" class="btn">Concluir Projeto</button>
+		</form>
+		
+		<a href="/projetos/index" class="btn">Voltar</a>
     </div>
 </body>
 </html>

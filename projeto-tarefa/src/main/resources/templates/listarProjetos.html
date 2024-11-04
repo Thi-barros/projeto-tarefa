@@ -80,7 +80,7 @@
         <h1>Lista de Projetos e Tarefas</h1>
         <div th:each="proj : ${projetos}" class="projeto-card">
             <h2 th:text="${proj.nome}">Nome do Projeto</h2>
-            <p><strong>ID do Projeto:</strong> <span th:text="${proj.id}">ID do Projeto</span></p> <!-- Adicione esta linha -->
+            <p><strong>ID do Projeto:</strong> <span th:text="${proj.id}">ID do Projeto</span></p>
             <p><strong>Descrição:</strong> <span th:text="${proj.descricao}">Descrição do Projeto</span></p>
             <p><strong>Data de Criação:</strong> <span th:text="${#temporals.format(proj.dataCriacao, 'dd/MM/yyyy HH:mm')}">Data de Criação</span></p>
 			<p><strong>Prazo:</strong> <span th:text="${#temporals.format(proj.prazo, 'dd/MM/yyyy HH:mm')}">Prazo</span></p>

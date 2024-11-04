@@ -36,17 +36,24 @@ public class TarefaController {
 
     @PostMapping("/salvar")
     @Transactional
-    public String criarTarefa(@ModelAttribute("tarefa") @Valid Tarefa tarefa, BindingResult result, 
-    		Model model, @RequestParam("projetoId") Long projetoId) {
+    public String criarTarefa(@RequestParam("projetoId") Long projetoId, 
+    		@ModelAttribute("tarefa") @Valid Tarefa tarefa, 
+    		BindingResult result, Model model) {
+    	System.out.println("projetoId:" + projetoId);
     	if (result.hasErrors()) {
             model.addAttribute("projetos", projetoService.listarProjetos());
     		model.addAttribute("tarefa", tarefa);
-            return "index"; // Retorna a mesma página com erros
+            return "index"; // Retorna a mesma página com erros 
         }
     	Projeto projeto = projetoService.buscarProjeto(projetoId);
-        tarefa.setProjeto(projeto);
-    	tarefaService.salvarTarefa(tarefa);
-        return "redirect:/projetos/index";
+    	if(projeto != null) {
+	    	tarefa.setProjeto(projeto);
+	    	tarefaService.salvarTarefa(tarefa);
+	    	return"redirect:/projetos/index";
+    	}else {
+    		System.out.println("Projeto não encontrado para o ID: " + projetoId);
+    	}
+	    return "redirect:/projetos/index";
     }
 
     @GetMapping("/{id}")
@@ -62,22 +69,22 @@ public class TarefaController {
          
     }
 
-    @PutMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<?> atualizarTarefa(@PathVariable Long id, @RequestBody Tarefa tarefaAtualizada) {
+    @PostMapping("/atualizar")
+    public String atualizarTarefa(@RequestParam("tarefaId") Long id, 
+    		@RequestParam("nome") String nome, 
+    		@RequestParam("descricao") String descricao) {
         Tarefa tarefa = tarefaService.buscarTarefa(id);
         if (tarefa != null) {
-            tarefa.setDescricao(tarefaAtualizada.getDescricao());
-            tarefa.setNome(tarefaAtualizada.getNome());
+            tarefa.setDescricao(descricao);
+            tarefa.setNome(nome);
             tarefaService.salvarTarefa(tarefa);
-        return ResponseEntity.ok(tarefa);
         }
-        return ResponseEntity.status(404).body("tarefa nao encontrada");
+        return "redirect:/projetos/index";
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/deletar")
     @Transactional
-    public String deletarTarefa(@PathVariable Long id, Model model) {
+    public String deletarTarefa(@RequestParam("tarefaId") Long id, Model model) {
         try {
     	tarefaService.deletarTarefa(id);
     	return"redirect:/projetos/index";
