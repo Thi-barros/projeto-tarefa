@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios</title>
+
+	<style>
+		*{
+		    margin: 0;
+		    padding: 0;
+		    box-sizing: border-box;
+		    font-family: Arial, Helvetica, sans-serif;
+		}
+
+		main{
+		    height: 600px;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    
+		}
+		main h1{ 
+		    margin: 100px 0 50px;
+		    font-size: 48px;
+		    font-family: 'Courier New', Courier, monospace;
+		}
+
+		.hidden {
+		    display: none;
+		}
+
+		.buttons {
+		    margin-bottom: 20px;
+
+		}
+		
+	
+		a{
+			text-decoration:none;
+			margin-top: 30px;
+		}
+
+		.buttons button,
+		form input[type="submit"],.btn, a{
+		    padding: 10px 15px;
+		    border-radius: 5px;
+		    border: none;
+		    background-color: rgb(7, 138, 190);
+		    font-weight: 600;
+		    color:#fff;
+		    cursor:pointer;
+		    font-size: 16px;
+		}
+		.buttons button:hover,
+		form input[type="submit"]:hover, .btn:hover, a:hover{
+		    background-color: rgb(5, 93, 128);
+		}
+
+		#forms{
+		    border: 2px solid #ffffff;
+		    padding: 20px 30px;
+		    border-radius: 10px;
+		    background-color: #d9e7f3;
+
+		}
+
+		form{
+		    /* display: flex;
+		    flex-direction: column;
+		    align-items: center; */
+		    padding: 10px 5px;
+		    width: 600px;
+		}
+
+		form h2{
+		    margin: 5px 0px 10px;
+		    font-size: 32px;
+		}
+
+		form label{
+		    font-size: 18px;
+		    margin-bottom: 5px;
+		    text-align: left;
+		}
+
+		form input[type="text"], select, textarea{
+		    margin: 0 0 10px 0;
+		    padding: 5px 5px;
+		    display: inline-block;
+		    border: none;
+		    margin-left: 10px;
+		    background-color: #d9e7f3;
+		    border-bottom: 1px solid #000;
+		}
+		form input[type="text"]:focus, select:focus, textarea:focus{
+		    background-color: #fff;
+		    border: none;
+		    border-bottom: #000;
+		    outline: none;
+		}
+
+
+		textarea{
+		    margin-top: 10px;
+		    width: 80%;
+		    max-width: 80%;
+		}
+
+
+		form input[type="submit"]{
+		    padding: 10px 30px;
+		    margin-top: 20px;
+		}
+		.error-message {
+		    color: #ff4d4d;
+		    font-weight: bold;
+		    font-size: 0.9em;
+		    margin-top: 5px;
+		}
+
+		.form-field-error {
+		    border: 1px solid #ff4d4d;
+		    background-color: #ffe6e6;
+		    padding: 5px;
+		    border-radius: 3px;
+		}
+
+	</style>
+</head>
+<body>
+	<main>	
+		<h1>Gerenciamento de Projetos</h1>
+		<div class="buttons">
+			<button onclick="showForm('createProject')">Criar Projeto</button>
+			<button onclick="showForm('createTask')">Criar Tarefa</button>
+			<button onclick="showForm('updateProject')">Atualizar Projeto</button>
+			<button onclick="showForm('deleteProject')">Deletar Projeto</button>
+			<button onclick="showForm('updateTarefa')">Atualizar Tarefa</button>
+			<button onclick="showForm('deleteTarefa')">Deletar Tarefa</button>
+		</div>
+
+		<div id="forms">	
+
+			<form id= "createProject" class="hidden" method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/salvar}" >
+				<label for="nm_projeto">Nome do projeto:</label>
+				<input type="text" name="nm_projeto" id="nm_projeto" th:field="*{nome}" required>
+				<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message">Nome invalido</span><br>
+
+				<label for="ds_descricao">Descrição do projeto:</label>
+				<input type="text" name="ds_descricao" id="ds_descricao" th:field="*{descricao}" required
+				th:classappend="${#fields.hasErrors('descricao')} ? 'form-field-error' : ''">
+				<span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="error-message">Descrição invalida</span><br>
+
+				<input type="submit" value="Criar">
+			</form>
+			
+			<form id= "createTask"  class="hidden" method = "POST" th:object="${tarefa}" th:action="@{/tarefas/salvar}">
+				<label for="nm_tarefa">Nome da tarefa:</label>
+				<input type="text" name="nm_tarefa" id="nm_tarefa" th:field="*{nome}" required
+				th:classappend="${#fields.hasErrors('nome')} ? 'form-field-error' : ''">
+				<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span><br>
+
+				<label for="projetoId">Projeto a qual se refere:</label>
+				<select name = "projetoId" required>
+					<option value="" disabled selected>Selecione um projeto</option>
+					<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+				</select>
+				<br>
+
+				<label for="ds_task">Descrição da tarefa:</label>
+				<input type="text" name="ds_task" id="ds_task" th:field="*{descricao}" required>
+				<span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></span><br>
+
+				<input type="submit" value="Criar">
+			</form>
+
+			<form id= "updateProject" class="hidden" method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/atualizar}" >
+				<label for="projetoId">Projeto a qual se refere:</label>
+				<select name = "projetoId" required>
+					<option value="" disabled selected>Selecione um projeto</option>
+					<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+				</select>	
+				<br>
+
+				<label for="nome">Nome do Projeto:</label>
+				<input type="text" name="nome" id="nome" placeholder="Novo nome do projeto" required>
+				<br>
+
+				<label for="descricao">Descrição:</label><br>
+				<textarea name="descricao" id="descricao" placeholder="Nova descrição do projeto"></textarea>
+				<br>
+						
+				<input type="submit" class="btn" value="Atualizar" />
+			</form>
+		
+			<form id="deleteProject" class="hidden" th:action="@{/projetos/deletar}" method="post">
+				<div>
+					<select name = "projetoId" required>
+						<option value="" disabled selected>Selecione um projeto</option>
+						<option th:each="proj: ${projetos}"th:value="${proj.id}" th:text="${proj.nome}"></option>
+					</select>	
+				</div>
+				<input type="submit" value="Deletar">
+			</form>
+			
+			<form id= "updateTarefa" class="hidden" method = "POST" action="#" th:object="${tarefa}" th:action="@{/tarefas/atualizar}" >
+				<label for="tarefaId">Tarefa a qual se refere:</label>
+				<select name = "tarefaId" required>
+					<option value="" disabled selected>Selecione uma tarefa</option>
+					<option th:each="tare: ${tarefas}"th:value="${tare.id}" th:text="${tare.nome}"></option>
+				</select>	
+				<br>
+
+				<label for="nome">Nome da tarefa:</label>
+				<input type="text" name="nome" id="nome" placeholder="Novo nome da tarefa" required>
+				<br>
+				<label for="descricao">Descrição:</label><br> 
+				<textarea name="descricao" id="descricao" placeholder="Nova descrição da tarefa"></textarea>
+				<br>									
+				<input type="submit" class="btn" value="Atualizar" />
+			</form>
+					
+			<form id="deleteTarefa" class="hidden" th:action="@{/tarefas/deletar}" method="post">
+				<div>
+					<select name = "tarefaId" required>
+						<option value="" disabled selected>Selecione uma tarefa</option>
+						<option th:each="tare: ${tarefas}"th:value="${tare.id}" th:text="${tare.nome}"></option>
+					</select>	
+				</div>
+				<button type="submit" class="btn" value="Deletar">Deletar Tarefa</button>
+			</form>		
+					
+		</div>
+			
+		<a href="/projetos/todos">Listar Todos os Projetos</a>
+	</main>	
+
+	<script>
+		function showForm(formId) {
+		    // Esconde todos os formulários
+		    const forms = document.querySelectorAll('#forms form');
+		    forms.forEach(form => form.classList.add('hidden'));
+
+		    // Mostra o formulário selecionado
+		    const selectedForm = document.getElementById(formId);
+		    selectedForm.classList.remove('hidden');
+		}
+
+	</script>
+</body>
+</html>

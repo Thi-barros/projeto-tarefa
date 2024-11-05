@@ -63,7 +63,7 @@ public class ProjetoController {
 		} 
 		projetoService.salvarProjeto(projeto);
 		projeto.setPrazo(projeto.getDataCriacao().plusDays(15));
-		return "redirect:/projetos/listar"; 
+		return "redirect:/projetos/listar";  
 	}
 	
 	@PostMapping("/atualizar")
@@ -96,12 +96,12 @@ public class ProjetoController {
 		mav.addObject("projeto", new Projeto());
 		mav.addObject("tarefa", new Tarefa());
 		mav.addObject("listaTarefas", tarefaService.listarTarefas());
-		return mav;
+		return mav; 
 	}
 	
 	@GetMapping("/todos")
 	public String listarTodosProjetos(Model model) {
-		model.addAttribute("projetos", projetoService.listarProjetos());
+		model.addAttribute("projetos", projetoService.listarProjetos()); 
 		model.addAttribute("listaTarefas", tarefaService.listarTarefas());
 		return"listarProjetos";
 		}
@@ -117,12 +117,6 @@ public class ProjetoController {
 			return"index";
 		}
 	}
-	/*@GetMapping("/detalhe/{id}")
-	public String exibirDetalheProjeto(@PathVariable Long id, Model model) {
-		Projeto projeto = projetoService.buscarProjeto(id); // Certifique-se de que esse método retorna um projeto válido
-		model.addAttribute("projeto", projeto);
-		return "projetoDetalhe"; // Nome da página HTML para o Thymeleaf renderizar
-		}*/
 	
 	@PostMapping("/deletar")
 	@Transactional

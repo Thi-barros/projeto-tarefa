@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -37,13 +38,14 @@ public class TarefaController {
     @PostMapping("/salvar")
     @Transactional
     public String criarTarefa(@RequestParam("projetoId") Long projetoId, 
-    		@ModelAttribute("tarefa") @Valid Tarefa tarefa, 
-    		BindingResult result, Model model) {
-    	System.out.println("projetoId:" + projetoId);
+    		@ModelAttribute("tarefa") @Valid Tarefa tarefa,
+    		BindingResult result, Model model)throws ParseException {
     	if (result.hasErrors()) {
+    		model.addAttribute("projeto", new Projeto());
             model.addAttribute("projetos", projetoService.listarProjetos());
     		model.addAttribute("tarefa", tarefa);
-            return "index"; // Retorna a mesma página com erros 
+    		model.addAttribute("tarefas", tarefaService.listarTarefas());   
+    		return "index"; // Retorna a mesma página com erros 
         }
     	Projeto projeto = projetoService.buscarProjeto(projetoId);
     	if(projeto != null) {
@@ -53,17 +55,17 @@ public class TarefaController {
     	}else {
     		System.out.println("Projeto não encontrado para o ID: " + projetoId);
     	}
-	    return "redirect:/projetos/index";
+    	return"redirect:/projetos/index";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public String buscarTarefaPorId(@PathVariable Long id, Model model) {
          Tarefa tarefa = tarefaService.buscarTarefa(id);
          if(tarefa != null) {
         	 model.addAttribute("tarefa", tarefa);
         	 return"projetoDetalhe";
          }else {
-        	 model.addAttribute("erro", "tarefa nao encontrada");
+        	 model.addAttribute("erro", "Tarefa nao encontrada");
         	 return"index";
          }
          

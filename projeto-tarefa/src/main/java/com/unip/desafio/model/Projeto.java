@@ -18,9 +18,8 @@ public class Projeto {
 @Id
 @GeneratedValue(strategy= GenerationType.IDENTITY)
 private Long id;
-//incluir data de criacao e talvez e a de termino, pense sobre a lógica. 
 @NotEmpty(message ="O nome do projeto é obrigatório")
-@Size(min = 2, max=30, message = "O nome do projeto deve conter entre 2 a 100 caracteres")
+@Size(min = 2, max=30, message = "O nome do projeto deve conter entre 2 a 30 caracteres")
 private String nome;
 @NotEmpty(message ="A descrição do projeto é obrigatório")
 private String descricao;
@@ -28,6 +27,10 @@ private boolean status;
 private LocalDateTime dataCriacao; 
 private LocalDateTime dataEntrega;
 private LocalDateTime prazo;
+
+
+@OneToMany(mappedBy= "projeto", cascade = CascadeType.ALL)
+private List<Tarefa> tarefas;
 
 public LocalDateTime getPrazo() {
 	return prazo;
@@ -41,9 +44,6 @@ public LocalDateTime getDataEntrega() {
 public void setDataEntrega(LocalDateTime dataEntrega) {
 	this.dataEntrega = dataEntrega;
 }
-@OneToMany(mappedBy= "projeto", cascade = CascadeType.ALL)
-private List<Tarefa> tarefas;
-
 
 public List<Tarefa> getTarefas() {
 	return tarefas;

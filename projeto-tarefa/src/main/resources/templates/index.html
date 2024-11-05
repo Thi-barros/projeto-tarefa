@@ -128,7 +128,7 @@
 
 	</style>
 </head>
-<body>
+<body onload="showForm('createProject')">
 	<main>	
 		<h1>Gerenciamento de Projetos</h1>
 		<div class="buttons">
@@ -142,24 +142,23 @@
 
 		<div id="forms">	
 
-			<form id= "createProject" class="hidden" method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/salvar}" >
+			<form id= "createProject" method = "POST" action="#" th:object="${projeto}" th:action="@{/projetos/salvar}" >
 				<label for="nm_projeto">Nome do projeto:</label>
-				<input type="text" name="nm_projeto" id="nm_projeto" th:field="*{nome}" required>
+				<input type="text" name="nm_projeto" id="nm_projeto" th:field="*{nome}">
 				<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message">Nome invalido</span><br>
 
 				<label for="ds_descricao">Descrição do projeto:</label>
-				<input type="text" name="ds_descricao" id="ds_descricao" th:field="*{descricao}" required
+				<input type="text" name="ds_descricao" id="ds_descricao" th:field="*{descricao}"
 				th:classappend="${#fields.hasErrors('descricao')} ? 'form-field-error' : ''">
 				<span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="error-message">Descrição invalida</span><br>
 
 				<input type="submit" value="Criar">
 			</form>
 			
-			<form id= "createTask"  class="hidden" method = "POST" th:object="${tarefa}" th:action="@{/tarefas/salvar}">
+			<form id= "createTask"  class="hidden" method = "POST" action="#" th:object="${tarefa}" th:action="@{/tarefas/salvar}">
 				<label for="nm_tarefa">Nome da tarefa:</label>
-				<input type="text" name="nm_tarefa" id="nm_tarefa" th:field="*{nome}" required
-				th:classappend="${#fields.hasErrors('nome')} ? 'form-field-error' : ''">
-				<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span><br>
+				<input type="text" name="nm_tarefa" id="nm_tarefa" th:field="*{nome}">
+				<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message">Nome invalido</span><br>
 
 				<label for="projetoId">Projeto a qual se refere:</label>
 				<select name = "projetoId" required>
@@ -169,8 +168,9 @@
 				<br>
 
 				<label for="ds_task">Descrição da tarefa:</label>
-				<input type="text" name="ds_task" id="ds_task" th:field="*{descricao}" required>
-				<span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></span><br>
+				<input type="text" name="ds_task" id="ds_task" th:field="*{descricao}" required
+				th:classappend="${#fields.hasErrors('descricao')} ? 'form-field-error' : ''">
+				<span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">Descricao invalida</span><br>
 
 				<input type="submit" value="Criar">
 			</form>
@@ -234,6 +234,7 @@
 		</div>
 			
 		<a href="/projetos/todos">Listar Todos os Projetos</a>
+		
 	</main>	
 
 	<script>
@@ -245,7 +246,11 @@
 		    // Mostra o formulário selecionado
 		    const selectedForm = document.getElementById(formId);
 		    selectedForm.classList.remove('hidden');
+			
 		}
+		document.addEventListener('DOMContentLoaded', function() { showForm('createProject'); 
+		// Muda 'createProject' para o ID do formulário que você quer mostrar por padrão 
+		});
 
 	</script>
 </body>

@@ -17,7 +17,7 @@ public class Tarefa {
 	private Long id;
 
 	@NotEmpty(message ="O nome da tarefa é obrigatório")
-	@Size(min = 2, max=100, message = "O nome da tarefa deve conter entre 2 a 100 caracteres")
+	@Size(min = 2, max=30, message = "O nome da tarefa deve conter entre 2 a 30 caracteres")
 	private String nome;
 	@NotEmpty(message ="A descrição da tarefa é obrigatório")
 	private String descricao;
